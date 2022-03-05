@@ -23,7 +23,7 @@ fs.writeFileSync("./txt/output.txt", textOut);
 // it doenst return anything
 
 // ------CALLBACK HELL----
-fs.readFile("./txt/starttttt.txt", "utf-8", (error, data1) => {
+fs.readFile("./txt/start.txt", "utf-8", (error, data1) => {
   if (error) {
     console.log(`Error 🤯`);
     return;
