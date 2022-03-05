@@ -21,7 +21,13 @@ fs.writeFileSync("./txt/output.txt", textOut);
 // 1st paraneter is the error
 // 2nd is the data
 // it doenst return anything
-fs.readFile("./txt/start.txt", "utf-8", (error, data1) => {
+
+// ------CALLBACK HELL----
+fs.readFile("./txt/starttttt.txt", "utf-8", (error, data1) => {
+  if (error) {
+    console.log(`Error 🤯`);
+    return;
+  }
   fs.readFile(`./txt/${data1}.txt`, "utf-8", (error, data2) => {
     fs.readFile("./txt/append.txt", "utf-8", (error, data3) => {
       const fullText = `${data1} \n${data2} \n${data3}`;
