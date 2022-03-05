@@ -5,20 +5,30 @@ const http = require("http");
 const url = require("url");
 const util = require("util");
 
-// blocking the rest of the code but we dont care for now
+// blocking the rest of the code but its only in the beggining it wont execute again
+// this is simply a string json formated we need to convert to object (Javascript Object Notation)-string
 const data = fs.readFileSync(
   `${__dirname}/dev-data/data.json`,
   "utf-8",
   (error, data) => {}
 );
+const productData = JSON.parse(data);
 
 // we create a server
 // return a new instance of server
 // the callback function will run each time a new request hits the server
 const server = http.createServer((request, response) => {
   const pathName = request.url;
+
+  // Overview Page
   if (pathName === "/" || pathName === "/overview") {
     response.end("This is the overview");
+
+    // Product Page
+  } else if (pathName === "/product") {
+    response.end("This is the Product");
+
+    // API
   } else if (pathName === "/api") {
     // Every time someone hits /api url the data will be read again and then will be sent back
     // as a response to the browser. It would be bettter to read the file once and sent it
@@ -28,10 +38,9 @@ const server = http.createServer((request, response) => {
     response.writeHead(200, {
       "Content-type": "application/json",
     });
-
     response.end(data);
-  } else if (pathName === "/products") {
-    response.end("this is the products page");
+
+    // Not Found
   } else {
     // sends headers
     // a http header is a piece of information about the response we are sending back
