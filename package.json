@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pipiskal/LearningNodeJs/issues"
   },
-  "homepage": "https://github.com/pipiskal/LearningNodeJs#readme"
+  "homepage": "https://github.com/pipiskal/LearningNodeJs#readme",
+  "dependencies": {
+    "slugify": "^1.6.5"
+  }
 }
