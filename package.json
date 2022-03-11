@@ -1,0 +1,19 @@
+{
+  "name": "node-farm",
+  "version": "1.0.0",
+  "description": "learning nodejs",
+  "main": "smallServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipiskal/LearningNodeJs.git"
+  },
+  "author": "Kalimeris Spyros",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pipiskal/LearningNodeJs/issues"
+  },
+  "homepage": "https://github.com/pipiskal/LearningNodeJs#readme"
+}

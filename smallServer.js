@@ -1,32 +1,50 @@
+const replaceTemplate = require("./modules/replaceTemplate");
 // requiring the build in http server;
 // it gives us networking capabilities to build a server;
 const fs = require("fs");
 const http = require("http");
-const url = require("url");
-const util = require("util");
+
+// const URL = require("url").URL;
 
 // blocking the rest of the code but its only in the beggining it wont execute again
 // this is simply a string json formated we need to convert to object (Javascript Object Notation)-string
-const data = fs.readFileSync(
-  `${__dirname}/dev-data/data.json`,
-  "utf-8",
-  (error, data) => {}
-);
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+// prettier-ignore
+const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`,"utf-8");
+// prettier-ignore
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`,"utf-8");
+// prettier-ignore
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`,"utf-8");
 const productData = JSON.parse(data);
-
 // we create a server
 // return a new instance of server
 // the callback function will run each time a new request hits the server
 const server = http.createServer((request, response) => {
-  const pathName = request.url;
-
+  const baseUrl = "http://" + request.headers.host + "/";
+  const url = new URL(request.url, baseUrl);
+  const pathName = url.pathname;
+  let productId = url.searchParams.get("id");
   // Overview Page
   if (pathName === "/" || pathName === "/overview") {
-    response.end("This is the overview");
+    response.writeHead(200, { "Content-type": "text/html" });
+
+    // we map over the products and use them to receive an array of html cards
+    // with replaced values from the actuall products we looped over
+    const cardsHtml = productData
+      .map((product) => replaceTemplate(tempCard, product))
+      .join("");
+    // prettier-ignore
+    const finalTempOverview = tempOverview.replace(/{%PRODUCT_CARDS%}/g, cardsHtml);
+
+    response.end(finalTempOverview);
 
     // Product Page
   } else if (pathName === "/product") {
-    response.end("This is the Product");
+    const product = productData[productId];
+
+    const output = replaceTemplate(tempProduct, product);
+
+    response.end(output);
 
     // API
   } else if (pathName === "/api") {
@@ -45,6 +63,7 @@ const server = http.createServer((request, response) => {
     // sends headers
     // a http header is a piece of information about the response we are sending back
     // like "Content-type" : "text/html"  , what the prowser expects to recieve
+
     response.writeHead(404, {
       "Content-type": "text/html",
       "my-own-header": "Hello-World",
